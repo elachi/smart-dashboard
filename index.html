@@ -248,25 +248,48 @@
 
     function updateBackground() {
       const hour = new Date().getHours();
-      let bg = '#1a1a2e';
-      let textColor = '#fff';
-
-      if (hour >= 5 && hour < 8) bg = 'linear-gradient(to right, #000428, #004e92)';
-      else if (hour >= 8 && hour < 12) bg = 'linear-gradient(to right, #2980b9, #6dd5fa)';
-      else if (hour >= 12 && hour < 17) bg = 'linear-gradient(to right, #fceabb, #f8b500)';
-      else if (hour >= 17 && hour < 20) bg = 'linear-gradient(to right, #2c3e50, #fd746c)';
-      else bg = 'linear-gradient(to right, #0f2027, #203a43, #2c5364)';
-
-      if (hour >= 10 && hour <= 15) textColor = '#000';
-      else textColor = '#fff';
-
+      let bg, textColor;
+    
+      if (hour >= 0 && hour < 6) {
+        // Midnight to 6 AM
+        bg = 'linear-gradient(to right, #000000, #1a1a1a, #2c3e50)';
+        textColor = '#fff';
+      } else if (hour >= 6 && hour < 8) {
+        // Sunrise
+        bg = 'linear-gradient(to right, #000428, #004e92)';
+        textColor = '#fff';
+      } else if (hour >= 8 && hour < 12) {
+        // Morning
+        bg = 'linear-gradient(to right, #2980b9, #6dd5fa)';
+        textColor = '#000';
+      } else if (hour >= 12 && hour < 17) {
+        // Afternoon
+        bg = 'linear-gradient(to right, #fceabb, #f8b500)';
+        textColor = '#000';
+      } else if (hour >= 17 && hour < 20) {
+        // Sunset
+        bg = 'linear-gradient(to right, #2c3e50, #fd746c)';
+        textColor = '#fff';
+      } else {
+        // Night
+        bg = 'linear-gradient(to right, #0f2027, #203a43, #2c5364)';
+        textColor = '#fff';
+      }
+    
       document.body.style.background = bg;
       document.body.style.color = textColor;
       document.documentElement.style.setProperty('--text-color', textColor);
     }
-
+    
+    // Run immediately
     updateBackground();
-    setInterval(updateBackground, 60 * 60 * 1000);
+    
+    // Run every hour (background + page refresh)
+    setInterval(() => {
+      updateBackground();
+      location.reload(); // 🔁 Auto-refresh the page
+    }, 60 * 60 * 1000); // Every hour
+
   </script>
 </body>
 </html>
