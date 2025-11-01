@@ -114,8 +114,7 @@ setInterval(updateBackground, 60 * 60 * 1000);
 async function fetchHeadlines() {
   const proxy = "https://api.allorigins.win/get?url=";
   const bbc = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
-//   const aj = encodeURIComponent("https://www.aljazeera.com/xml/rss/all.xml");
-
+  
   const fetchRSS = async (url) => {
     try {
       const res = await fetch(proxy + url);
