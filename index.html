@@ -6,70 +6,150 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart Dashboard</title>
   <style>
+    :root {
+      --bg-color: #1a1a2e;
+      --text-color: #ffffff;
+    }
+
     body {
       margin: 0;
-      padding: 1rem;
-      font-family: sans-serif;
-      background: linear-gradient(to right, #2c3e50, #3498db);
-      color: white;
+      padding: 2vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 2vh;
+      min-height: 20vh;
+      box-sizing: border-box;
+      transition: background 2s ease-in-out, color 1s ease-in-out;
     }
+
     .row {
       display: flex;
-      gap: 1rem;
       flex-wrap: wrap;
-    }
-    .widget {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1rem;
-      border-radius: 10px;
-      flex: 1;
-      min-width: 200px;
-    }
-    .clock-weather {
-      display: flex;
+      gap: 2vh;
       justify-content: space-between;
-      align-items: center;
+      width: 100%;
     }
+
+    .widget {
+      flex-grow: 1;
+      min-width: 30%;
+      flex-basis: 30%;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2vh;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      box-sizing: border-box;
+    }
+
+    .thin-row .widget {
+      flex-basis: 32%;
+      min-width: 32%;
+    }
+
+    .full-width {
+      flex-basis: 100%;
+    }
+
     .clock {
-      font-size: 3rem;
-    }
-    .weather {
-      font-size: 1.5rem;
-    }
-    .date {
+      font-size: 4vw;
       font-weight: bold;
+      text-align: right;
+      flex: 1 1 60%;
+      max-width: 60%;
+    }
+
+    .date {
+      text-align: right;
+      font-size: 2vw;
+      font-weight: bold;
+    }
+
+    .weather {
+      font-size: 3vw;
+      font-weight: 500;
+      text-align: left;
+      flex: 1 1 40%;
+      max-width: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    input[type="text"] {
+      padding: 1vh;
+      font-size: 2.5vw;
+      width: 70%;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      padding: 1vh 2vh;
+      font-size: 2.5vw;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    li {
+      font-size: 2.5vw;
+      margin-top: 1vh;
+    }
+
+    @media (max-width: 768px) {
+      .widget {
+        flex-basis: 48%;
+        min-width: 48%;
+      }
+
+      .clock, .weather {
+        flex-basis: 48%;
+        max-width: 48%;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .clock, .weather {
+        flex-basis: 100%;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="row clock-weather">
-    <div class="weather">
-      🌤️ 7°C - Stockholm
-    </div>
-    <div>
-      <div class="clock" id="clock">13:34</div>
-      <div class="date" id="date">Wed, May 18</div>
+  <div class="row">
+    <div class="widget weather" id="weather">Loading weather...</div>
+    <div class="widget clock">
+      <div id="clock"></div>
+      <div class="date" id="date"></div>
     </div>
   </div>
 
   <div class="row">
-    <div class="widget">
-      <h3>Grocery List</h3>
-      <ul id="grocery-list"></ul>
-      <input type="text" id="grocery-input" placeholder="Add item">
-      <button onclick="addGrocery()">Add</button>
+    <div class="widget full-width">
+      <h2>Grocery List</h2>
+      <input type="text" id="item-input" placeholder="Add item..." />
+      <button onclick="addItem()">Add</button>
+      <ul id="items"></ul>
     </div>
   </div>
 
   <div class="row">
-    <div class="widget">
-      <h3>Todo List</h3>
+    <div class="widget full-width">
+      <h2>To-Do List</h2>
+      <input type="text" id="todo-input" placeholder="Add task..." />
+      <button onclick="addTask()">Add</button>
       <ul id="todo-list"></ul>
-      <input type="text" id="todo-input" placeholder="Add task">
-      <button onclick="addTodo()">Add</button>
     </div>
   </div>
 
@@ -80,7 +160,7 @@
     <div class="widget"></div>
   </div>
 
-  <div class="row">
+  <div class="row thin-row">
     <div class="widget"></div>
     <div class="widget"></div>
     <div class="widget"></div>
@@ -89,38 +169,114 @@
   <script>
     function updateClock() {
       const now = new Date();
-      document.getElementById("clock").textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      document.getElementById("date").textContent = now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById("date").textContent = now.toDateString();
     }
+
     setInterval(updateClock, 1000);
     updateClock();
 
-    const groceryList = document.getElementById("grocery-list");
-    function addGrocery() {
-      const input = document.getElementById("grocery-input");
-      const item = input.value.trim();
-      if (item) {
+    const apiKey = "464ada6dae3151b0fb9bbf18cba7bec4";
+    const lat = 59.3293;
+    const lon = 18.0686;
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
+      .then(res => res.json())
+      .then(data => {
+        const temp = Math.round(data.main.temp);
+        const icon = data.weather[0].icon;
+        const desc = data.weather[0].description;
+        document.getElementById("weather").innerHTML = `<img src='https://openweathermap.org/img/wn/${icon}@2x.png' style='vertical-align:middle;'> ${temp}°C <br><span>${desc}</span>`;
+      })
+      .catch(() => {
+        document.getElementById("weather").textContent = "Weather unavailable";
+      });
+
+    let items = JSON.parse(localStorage.getItem("groceryList")) || [];
+    function saveItems() {
+      localStorage.setItem("groceryList", JSON.stringify(items));
+    }
+    function renderItems() {
+      const list = document.getElementById("items");
+      list.innerHTML = "";
+      items.forEach((item, index) => {
         const li = document.createElement("li");
         li.textContent = item;
-        groceryList.appendChild(li);
+        const btn = document.createElement("button");
+        btn.textContent = "❌";
+        btn.onclick = () => {
+          items.splice(index, 1);
+          saveItems();
+          renderItems();
+        };
+        li.appendChild(btn);
+        list.appendChild(li);
+      });
+    }
+    function addItem() {
+      const input = document.getElementById("item-input");
+      if (input.value.trim()) {
+        items.push(input.value.trim());
         input.value = "";
+        saveItems();
+        renderItems();
       }
     }
+    renderItems();
 
-    const todoList = document.getElementById("todo-list");
-    function addTodo() {
-      const input = document.getElementById("todo-input");
-      const task = input.value.trim();
-      if (task) {
+    let todos = JSON.parse(localStorage.getItem("todoList")) || [];
+    function saveTodos() {
+      localStorage.setItem("todoList", JSON.stringify(todos));
+    }
+    function renderTodos() {
+      const list = document.getElementById("todo-list");
+      list.innerHTML = "";
+      todos.forEach((item, index) => {
         const li = document.createElement("li");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
+        checkbox.checked = item.done;
+        checkbox.onchange = () => {
+          item.done = checkbox.checked;
+          saveTodos();
+        };
         li.appendChild(checkbox);
-        li.appendChild(document.createTextNode(" " + task));
-        todoList.appendChild(li);
+        li.appendChild(document.createTextNode(" " + item.text));
+        list.appendChild(li);
+      });
+    }
+    function addTask() {
+      const input = document.getElementById("todo-input");
+      if (input.value.trim()) {
+        todos.push({ text: input.value.trim(), done: false });
         input.value = "";
+        saveTodos();
+        renderTodos();
       }
     }
+    renderTodos();
+
+    function updateBackground() {
+      const hour = new Date().getHours();
+      let bg = '#1a1a2e';
+      let textColor = '#fff';
+
+      if (hour >= 5 && hour < 8) bg = 'linear-gradient(to right, #000428, #004e92)';
+      else if (hour >= 8 && hour < 12) bg = 'linear-gradient(to right, #2980b9, #6dd5fa)';
+      else if (hour >= 12 && hour < 17) bg = 'linear-gradient(to right, #fceabb, #f8b500)';
+      else if (hour >= 17 && hour < 20) bg = 'linear-gradient(to right, #2c3e50, #fd746c)';
+      else bg = 'linear-gradient(to right, #0f2027, #203a43, #2c5364)';
+
+      if (hour >= 10 && hour <= 15) textColor = '#000';
+      else textColor = '#fff';
+
+      document.body.style.background = bg;
+      document.body.style.color = textColor;
+      document.documentElement.style.setProperty('--text-color', textColor);
+    }
+
+    updateBackground();
+    setInterval(updateBackground, 60 * 60 * 1000);
   </script>
 </body>
 </html>
