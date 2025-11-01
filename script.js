@@ -129,9 +129,8 @@ async function fetchHeadlines() {
   };
 
   const bbcNews = await fetchRSS(bbc);
-  const ajNews = await fetchRSS(aj);
 
-  const headlines = [...bbcNews, ...ajNews];
+  const headlines = [...bbcNews];
   const ticker = document.getElementById("newsTicker");
   ticker.innerHTML = headlines.map(h => `<span>${h}</span>`).join('');
 }
