@@ -2,23 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Smart Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="script.js" defer></script>
-
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="row">
-    <div class="widget full-width news-ticker">
-      <div class="ticker-wrap">
-        <div class="ticker" id="newsTicker">
-          <span>Loading headlines...</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="row">
     <div class="widget weather" id="weather">Loading weather...</div>
     <div class="widget clock">
@@ -56,6 +44,10 @@
     <div class="widget"></div>
     <div class="widget"></div>
     <div class="widget"></div>
+  </div>
+
+  <div class="news-ticker">
+    <div id="newsTicker" class="ticker-content"></div>
   </div>
 
   <script src="script.js"></script>

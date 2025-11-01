@@ -1,3 +1,4 @@
+
 function updateClock() {
   const now = new Date();
   document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -6,7 +7,6 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Weather
 const apiKey = "464ada6dae3151b0fb9bbf18cba7bec4";
 const lat = 59.3293;
 const lon = 18.0686;
@@ -17,16 +17,14 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&uni
     const temp = Math.round(data.main.temp);
     const icon = data.weather[0].icon;
     const desc = data.weather[0].description;
-    document.getElementById("weather").innerHTML = `
-      <img src='https://openweathermap.org/img/wn/${icon}@2x.png' 
-           style='vertical-align:middle; width: 60px;'> 
-      ${temp}°C <br><span>${desc}</span>`;
+    document.getElementById("weather").innerHTML = 
+      `<img src='https://openweathermap.org/img/wn/${icon}@2x.png' style='vertical-align:middle; width:60px;'> 
+       ${temp}°C <br><span>${desc}</span>`;
   })
   .catch(() => {
     document.getElementById("weather").textContent = "Weather unavailable";
   });
 
-// Grocery List
 let items = JSON.parse(localStorage.getItem("groceryList")) || [];
 function saveItems() {
   localStorage.setItem("groceryList", JSON.stringify(items));
@@ -59,7 +57,6 @@ function addItem() {
 }
 renderItems();
 
-// To-Do List
 let todos = JSON.parse(localStorage.getItem("todoList")) || [];
 function saveTodos() {
   localStorage.setItem("todoList", JSON.stringify(todos));
@@ -92,26 +89,20 @@ function addTask() {
 }
 renderTodos();
 
-// Dynamic Background by Time
 function updateBackground() {
   const hour = new Date().getHours();
   let bg = '#1a1a2e';
   let textColor = '#fff';
 
-  if (hour >= 0 && hour < 6)
-    bg = 'linear-gradient(to right, #000000, #0a0a23)';
-  else if (hour >= 6 && hour < 8)
-    bg = 'linear-gradient(to right, #000428, #004e92)';
-  else if (hour >= 8 && hour < 12)
-    bg = 'linear-gradient(to right, #2980b9, #6dd5fa)';
-  else if (hour >= 12 && hour < 17)
-    bg = 'linear-gradient(to right, #fceabb, #f8b500)';
-  else if (hour >= 17 && hour < 20)
-    bg = 'linear-gradient(to right, #2c3e50, #fd746c)';
-  else
-    bg = 'linear-gradient(to right, #0f2027, #203a43, #2c5364)';
+  if (hour >= 0 && hour < 6) bg = 'linear-gradient(to right, #000000, #0a0a23)';
+  else if (hour >= 6 && hour < 8) bg = 'linear-gradient(to right, #000428, #004e92)';
+  else if (hour >= 8 && hour < 12) bg = 'linear-gradient(to right, #2980b9, #6dd5fa)';
+  else if (hour >= 12 && hour < 17) bg = 'linear-gradient(to right, #fceabb, #f8b500)';
+  else if (hour >= 17 && hour < 20) bg = 'linear-gradient(to right, #2c3e50, #fd746c)';
+  else bg = 'linear-gradient(to right, #0f2027, #203a43, #2c5364)';
 
-  textColor = (hour >= 10 && hour <= 15) ? '#000' : '#fff';
+  if (hour >= 10 && hour <= 15) textColor = '#000';
+  else textColor = '#fff';
 
   document.body.style.background = bg;
   document.body.style.color = textColor;
@@ -120,7 +111,6 @@ function updateBackground() {
 updateBackground();
 setInterval(updateBackground, 60 * 60 * 1000);
 
-// News Feed (BBC + Aljazeera)
 async function fetchHeadlines() {
   const proxy = "https://api.allorigins.win/get?url=";
   const bbc = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
@@ -141,9 +131,10 @@ async function fetchHeadlines() {
 
   const bbcNews = await fetchRSS(bbc);
   const ajNews = await fetchRSS(aj);
+
   const headlines = [...bbcNews, ...ajNews];
   const ticker = document.getElementById("newsTicker");
-  ticker.innerHTML = headlines.map(h => `<span>${h}</span>`).join(' • ');
+  ticker.innerHTML = headlines.map(h => `<span>${h}</span>`).join('');
 }
 fetchHeadlines();
 setInterval(fetchHeadlines, 30 * 60 * 1000);
