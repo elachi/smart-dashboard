@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    :root {
+      --accent: #ff9800; /* orange */
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      gap: 2rem;
+      box-sizing: border-box;
+    }
+
+    .row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .row1 .card:nth-child(1) { flex: 1 1 40%; }
+    .row1 .card:nth-child(2) { flex: 1 1 40%; }
+    .row1 .card:nth-child(3) { flex: 1 1 20%; }
+
+    .row2 .card { flex: 1 1 25%; height: 200px; }
+    .row3 .card { flex: 1 1 33%; height: 100px; }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      box-sizing: border-box;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-weight: 300;
+      font-size: 1.4em;
+      color: #ccc;
+    }
+
+    #clock {
+      font-size: 4em;
+      font-weight: bold;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    #date {
+      text-align: center;
+      color: #bbb;
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 8px;
+      margin-right: 0.5rem;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    button {
+      padding: 0.6rem 1rem;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 1rem;
+    }
+
+    li {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.6rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li button {
+      background: #ff3b3b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+    }
+
+    .weather {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row row1">
+      <div class="card">
+        <h2>🕒 Clock</h2>
+        <div id="clock"></div>
+        <div id="date"></div>
+      </div>
+
+      <div class="card weather">
+        <h2>🌤️ Weather</h2>
+        <div id="weather">Loading weather...</div>
+      </div>
+
+      <div class="card">
+        <h2>🛒 Grocery List</h2>
+        <input type="text" id="item-input" placeholder="Add item..." />
+        <button onclick="addItem()">Add</button>
+        <ul id="items"></ul>
+      </div>
+    </div>
+
+    <div class="row row2">
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+    </div>
+
+    <div class="row row3">
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      document.getElementById("date").textContent = now.toDateString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    const weatherEl = document.getElementById("weather");
+    const apiKey = "464ada6dae3151b0fb9bbf18cba7bec4";
+    const lat = 59.3293;
+    const lon = 18.0686;
+
+    function fetchWeather(lat, lon) {
+      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
+        .then(res => res.json())
+        .then(data => {
+          const temp = Math.round(data.main.temp);
+          const desc = data.weather[0].description;
+          const city = data.name;
+          weatherEl.textContent = `${city}: ${temp}°C - ${desc}`;
+        })
+        .catch(err => {
+          console.error(err);
+          weatherEl.textContent = "Unable to fetch weather";
+        });
+    }
+
+    fetchWeather(lat, lon);
+
+    let items = JSON.parse(localStorage.getItem("groceryList")) || [];
+
+    function saveItems() {
+      localStorage.setItem("groceryList", JSON.stringify(items));
+    }
+
+    function renderItems() {
+      const list = document.getElementById("items");
+      list.innerHTML = "";
+      items.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        const btn = document.createElement("button");
+        btn.textContent = "❌";
+        btn.onclick = () => {
+          items.splice(index, 1);
+          saveItems();
+          renderItems();
+        };
+        li.appendChild(btn);
+        list.appendChild(li);
+      });
+    }
+
+    function addItem() {
+      const input = document.getElementById("item-input");
+      if (input.value.trim()) {
+        items.push(input.value.trim());
+        input.value = "";
+        saveItems();
+        renderItems();
+      }
+    }
+
+    renderItems();
+  </script>
+</body>
+</html>
