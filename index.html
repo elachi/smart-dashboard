@@ -1,273 +1,126 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap" rel="stylesheet">
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #1f1c2c, #928dab);
-      color: #fff;
+      padding: 1rem;
+      font-family: sans-serif;
+      background: linear-gradient(to right, #2c3e50, #3498db);
+      color: white;
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      padding: 1rem;
-      box-sizing: border-box;
     }
-
-    :root {
-      --accent: #ff9800;
-    }
-
     .row {
       display: flex;
-      flex-wrap: wrap;
       gap: 1rem;
-      width: 100%;
+      flex-wrap: wrap;
     }
-
-    .row-1 .card:nth-child(1) {
-      flex: 1 1 60%;
-    }
-
-    .row-1 .card:nth-child(2) {
-      flex: 1 1 40%;
-    }
-
-    .row-2 .card,
-    .row-3 .card {
-      flex: 1 1 100%;
-    }
-
-    .row-4 .card {
-      flex: 1 1 calc(25% - 0.75rem);
-    }
-
-    .row-5 .card {
-      flex: 1 1 calc(33.333% - 0.75rem);
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .widget {
+      background: rgba(255, 255, 255, 0.1);
       padding: 1rem;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(8px);
-      height: 100%;
-      box-sizing: border-box;
-    }
-
-    #clock {
-      font-size: 6em;
-      font-weight: bold;
-      color: var(--accent);
-      text-align: center;
-    }
-
-    #date {
-      text-align: center;
-      color: #bbb;
-    }
-
-    .weather-icon {
-      font-size: 4em;
-      text-align: center;
-    }
-
-    .weather-text {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.2em;
-    }
-
-    input[type="text"] {
-      width: 70%;
-      padding: 0.6rem;
-      border: none;
-      border-radius: 8px;
-      margin-right: 0.5rem;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    button {
-      padding: 0.6rem 1rem;
-      background: var(--accent);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    ul {
-      list-style: none;
-      padding-left: 0;
-      margin-top: 1rem;
-    }
-
-    li {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 0.6rem 1rem;
-      margin-bottom: 0.5rem;
       border-radius: 10px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .clock-weather {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-
-    li input[type="checkbox"] {
-      margin-right: 1rem;
+    .clock {
+      font-size: 3rem;
     }
-
-    li button {
-      background: #ff3b3b;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 0.3rem 0.6rem;
-      cursor: pointer;
+    .weather {
+      font-size: 1.5rem;
+    }
+    .date {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="row row-1">
-    <div class="card">
-      <h2>🕒 Clock</h2>
-      <div id="clock"></div>
-      <div id="date"></div>
+  <div class="row clock-weather">
+    <div class="weather">
+      🌤️ 7°C - Stockholm
     </div>
-    <div class="card">
-      <h2>🌤️ Weather</h2>
-      <div class="weather-icon">⛅</div>
-      <div id="weather" class="weather-text">Loading...</div>
+    <div>
+      <div class="clock" id="clock">13:34</div>
+      <div class="date" id="date">Wed, May 18</div>
     </div>
   </div>
 
-  <div class="row row-2">
-    <div class="card">
-      <h2>🛒 Grocery List</h2>
-      <input type="text" id="item-input" placeholder="Add item..." />
-      <button onclick="addItem()">Add</button>
-      <ul id="items"></ul>
+  <div class="row">
+    <div class="widget">
+      <h3>Grocery List</h3>
+      <ul id="grocery-list"></ul>
+      <input type="text" id="grocery-input" placeholder="Add item">
+      <button onclick="addGrocery()">Add</button>
     </div>
   </div>
 
-  <div class="row row-3">
-    <div class="card">
-      <h2>✅ To-Do List</h2>
-      <input type="text" id="todo-input" placeholder="New task..." />
+  <div class="row">
+    <div class="widget">
+      <h3>Todo List</h3>
+      <ul id="todo-list"></ul>
+      <input type="text" id="todo-input" placeholder="Add task">
       <button onclick="addTodo()">Add</button>
-      <ul id="todos"></ul>
     </div>
   </div>
 
-  <div class="row row-4">
-    <div class="card">Widget 1</div>
-    <div class="card">Widget 2</div>
-    <div class="card">Widget 3</div>
-    <div class="card">Widget 4</div>
+  <div class="row">
+    <div class="widget"></div>
+    <div class="widget"></div>
+    <div class="widget"></div>
+    <div class="widget"></div>
   </div>
 
-  <div class="row row-5">
-    <div class="card">Thin 1</div>
-    <div class="card">Thin 2</div>
-    <div class="card">Thin 3</div>
+  <div class="row">
+    <div class="widget"></div>
+    <div class="widget"></div>
+    <div class="widget"></div>
   </div>
 
   <script>
     function updateClock() {
       const now = new Date();
-      document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      document.getElementById("date").textContent = now.toDateString();
+      document.getElementById("clock").textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      document.getElementById("date").textContent = now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    const apiKey = "464ada6dae3151b0fb9bbf18cba7bec4";
-    const lat = 59.3293;
-    const lon = 18.0686;
-
-    function fetchWeather(lat, lon) {
-      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
-        .then(res => res.json())
-        .then(data => {
-          const temp = Math.round(data.main.temp);
-          const desc = data.weather[0].description;
-          const city = data.name;
-          document.getElementById("weather").textContent = `${city}: ${temp}°C - ${desc}`;
-        })
-        .catch(err => {
-          document.getElementById("weather").textContent = "Weather unavailable";
-        });
-    }
-    fetchWeather(lat, lon);
-
-    let items = JSON.parse(localStorage.getItem("groceryList")) || [];
-    function saveItems() { localStorage.setItem("groceryList", JSON.stringify(items)); }
-    function renderItems() {
-      const list = document.getElementById("items");
-      list.innerHTML = "";
-      items.forEach((item, index) => {
+    const groceryList = document.getElementById("grocery-list");
+    function addGrocery() {
+      const input = document.getElementById("grocery-input");
+      const item = input.value.trim();
+      if (item) {
         const li = document.createElement("li");
         li.textContent = item;
-        const btn = document.createElement("button");
-        btn.textContent = "❌";
-        btn.onclick = () => { items.splice(index, 1); saveItems(); renderItems(); };
-        li.appendChild(btn);
-        list.appendChild(li);
-      });
-    }
-    function addItem() {
-      const input = document.getElementById("item-input");
-      if (input.value.trim()) {
-        items.push(input.value.trim());
+        groceryList.appendChild(li);
         input.value = "";
-        saveItems();
-        renderItems();
       }
     }
-    renderItems();
 
-    let todos = JSON.parse(localStorage.getItem("todoList")) || [];
-    function saveTodos() { localStorage.setItem("todoList", JSON.stringify(todos)); }
-    function renderTodos() {
-      const list = document.getElementById("todos");
-      list.innerHTML = "";
-      todos.forEach((todo, index) => {
+    const todoList = document.getElementById("todo-list");
+    function addTodo() {
+      const input = document.getElementById("todo-input");
+      const task = input.value.trim();
+      if (task) {
         const li = document.createElement("li");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.checked = todo.done;
-        checkbox.onchange = () => { todo.done = !todo.done; saveTodos(); };
-        const span = document.createElement("span");
-        span.textContent = todo.text;
         li.appendChild(checkbox);
-        li.appendChild(span);
-        const btn = document.createElement("button");
-        btn.textContent = "❌";
-        btn.onclick = () => { todos.splice(index, 1); saveTodos(); renderTodos(); };
-        li.appendChild(btn);
-        list.appendChild(li);
-      });
-    }
-    function addTodo() {
-      const input = document.getElementById("todo-input");
-      if (input.value.trim()) {
-        todos.push({ text: input.value.trim(), done: false });
+        li.appendChild(document.createTextNode(" " + task));
+        todoList.appendChild(li);
         input.value = "";
-        saveTodos();
-        renderTodos();
       }
     }
-    renderTodos();
   </script>
 </body>
 </html>
