@@ -136,3 +136,10 @@ async function fetchHeadlines() {
 }
 fetchHeadlines();
 setInterval(fetchHeadlines, 30 * 60 * 1000);
+
+
+// Full Page Auto Refresh every 1 hour
+setTimeout(() => {
+  location.reload();
+}, 60 * 60 * 1000); // 1 hour in milliseconds
+
