@@ -1,12 +1,12 @@
-
+// =================== 🕒 CLOCK DISPLAY ===================
 function updateClock() {
   const now = new Date();
   document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  document.getElementById("date").textContent = now.toDateString();
 }
 setInterval(updateClock, 1000);
 updateClock();
 
+// =================== 🌤️ WEATHER DISPLAY ===================
 const apiKey = "464ada6dae3151b0fb9bbf18cba7bec4";
 const lat = 59.3293;
 const lon = 18.0686;
@@ -17,18 +17,19 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&uni
     const temp = Math.round(data.main.temp);
     const icon = data.weather[0].icon;
     const desc = data.weather[0].description;
-    document.getElementById("weather").innerHTML = 
-      `<img src='https://openweathermap.org/img/wn/${icon}@2x.png' style='vertical-align:middle; width:60px;'> 
-       ${temp}°C <br><span>${desc}</span>`;
+    document.getElementById("weather").innerHTML = `<img src='https://openweathermap.org/img/wn/${icon}@2x.png' style='width:60px;'> <strong>${temp}&deg;C</strong><br><span>${desc}</span>`;
   })
   .catch(() => {
     document.getElementById("weather").textContent = "Weather unavailable";
   });
 
+// =================== 🛒 GROCERY LIST ===================
 let items = JSON.parse(localStorage.getItem("groceryList")) || [];
+
 function saveItems() {
   localStorage.setItem("groceryList", JSON.stringify(items));
 }
+
 function renderItems() {
   const list = document.getElementById("items");
   list.innerHTML = "";
@@ -46,6 +47,7 @@ function renderItems() {
     list.appendChild(li);
   });
 }
+
 function addItem() {
   const input = document.getElementById("item-input");
   if (input.value.trim()) {
@@ -57,10 +59,13 @@ function addItem() {
 }
 renderItems();
 
+// =================== ✅ TO-DO LIST ===================
 let todos = JSON.parse(localStorage.getItem("todoList")) || [];
+
 function saveTodos() {
   localStorage.setItem("todoList", JSON.stringify(todos));
 }
+
 function renderTodos() {
   const list = document.getElementById("todo-list");
   list.innerHTML = "";
@@ -78,6 +83,7 @@ function renderTodos() {
     list.appendChild(li);
   });
 }
+
 function addTask() {
   const input = document.getElementById("todo-input");
   if (input.value.trim()) {
@@ -89,6 +95,7 @@ function addTask() {
 }
 renderTodos();
 
+// =================== 🎨 DYNAMIC BACKGROUND ===================
 function updateBackground() {
   const hour = new Date().getHours();
   let bg = '#1a1a2e';
@@ -109,12 +116,14 @@ function updateBackground() {
   document.documentElement.style.setProperty('--text-color', textColor);
 }
 updateBackground();
-setInterval(updateBackground, 60 * 60 * 1000);
+setInterval(updateBackground, 60 * 60 * 1000); // every hour
 
+// =================== 📰 NEWS TICKER ===================
 async function fetchHeadlines() {
   const proxy = "https://api.allorigins.win/get?url=";
   const bbc = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
-  
+  const aj = encodeURIComponent("https://www.aljazeera.net/aljazeera/rss");
+
   const fetchRSS = async (url) => {
     try {
       const res = await fetch(proxy + url);
@@ -124,22 +133,22 @@ async function fetchHeadlines() {
       const items = Array.from(xml.querySelectorAll("item")).slice(0, 5);
       return items.map(i => i.querySelector("title").textContent);
     } catch (e) {
-      return [`Failed to load: ${url}`];
+      return ["Feed unavailable"];
     }
   };
 
   const bbcNews = await fetchRSS(bbc);
+  const ajNews = await fetchRSS(aj);
 
-  const headlines = [...bbcNews];
+  const headlines = [...bbcNews, ...ajNews];
   const ticker = document.getElementById("newsTicker");
   ticker.innerHTML = headlines.map(h => `<span>${h}</span>`).join('');
 }
+
 fetchHeadlines();
-setInterval(fetchHeadlines, 30 * 60 * 1000);
+setInterval(fetchHeadlines, 30 * 60 * 1000); // every 30 minutes
 
-
-// Full Page Auto Refresh every 1 hour
+// =================== 🔁 AUTO-REFRESH PAGE ===================
 setTimeout(() => {
   location.reload();
-}, 60 * 60 * 1000); // 1 hour in milliseconds
-
+}, 60 * 60 * 1000); // every 1 hour
