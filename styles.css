@@ -67,6 +67,7 @@ body {
 /* ========== Input Fields ========== */
 input[type="text"] {
   width: 100%;
+  box-sizeing: border-box;
   padding: 0.6vh 1vw;
   border: none;
   border-radius: 8px;
