@@ -1,113 +1,126 @@
+:root {
+  --text-color: #fff;
+}
+
 body {
   margin: 0;
-  padding: 2vh;
+  padding: 2vh 2vw;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--bg-color, #1a1a2e);
-  color: var(--text-color, #ffffff);
+  background: linear-gradient(to right, #1a1a2e, #16213e);
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
+  gap: 3vh;
+}
+
+/* Layout Grid */
+.dashboard {
+  display: grid;
   gap: 2vh;
-  box-sizing: border-box;
-  transition: background 2s ease-in-out, color 1s ease-in-out;
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  gap: 2vh;
+  gap: 2vw;
   justify-content: space-between;
-  width: 100%;
 }
 
+/* Widget styling */
 .widget {
-  flex-grow: 1;
-  min-width: 30%;
-  flex-basis: 30%;
   background: rgba(255, 255, 255, 0.05);
-  padding: 2vh;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 2vh 2vw;
+  flex-grow: 1;
+  min-width: 20%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: background 0.3s;
 }
 
-.thin-row .widget {
-  flex-basis: 32%;
-  min-width: 32%;
-}
-
-.full-width {
-  flex-basis: 100%;
-}
-
-.clock {
-  font-size: 6vw;
-  font-weight: bold;
-  text-align: right;
-}
-
-.date {
-  text-align: right;
-  font-size: 2vw;
-  font-weight: bold;
+/* Clock & Weather */
+#clock {
+  font-size: 5vw;
+  font-weight: 600;
+  margin-bottom: 0.5vh;
 }
 
 #date {
-  font-size: 1.5vw;
-  font-weight: bold;
-  margin-top: 0.5vh;
-  opacity: 0.8;
-}
-
-
-.weather {
-  font-size: 4vw;
-  font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-}
-
-ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-input[type="text"] {
-  padding: 1vh;
   font-size: 2vw;
-  width: 70%;
-  border-radius: 10px;
+  font-weight: 400;
+}
+
+#weather {
+  font-size: 1.8vw;
+}
+
+#weather img {
+  vertical-align: middle;
+  width: 60px;
+}
+
+/* Grocery + To-Do Inputs */
+input[type="text"] {
+  width: 100%;
+  padding: 0.6vh 1vw;
   border: none;
+  border-radius: 8px;
+  font-size: 1.6vh;
+  margin-bottom: 1vh;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-color);
+  outline: none;
 }
 
 button {
-  padding: 1vh 2vh;
-  font-size: 2vw;
+  padding: 0.3vh 0.8vw;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
-  border-radius: 10px;
+  border-radius: 6px;
+  color: var(--text-color);
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-li {
-  font-size: 2vw;
-  margin-top: 1vh;
+button:hover {
+  background: rgba(255, 0, 0, 0.3);
 }
 
+/* Grocery List */
+#grocery, #todo {
+  font-size: 1.7vh;
+}
+
+#items li, #todo-list li {
+  margin-bottom: 0.5vh;
+  padding: 0.5vh 1vw;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 1.6vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.3s ease;
+}
+
+#todo-list input[type="checkbox"] {
+  margin-right: 1vw;
+  transform: scale(1.1);
+}
+
+/* News Ticker */
 .news-ticker {
   overflow: hidden;
   white-space: nowrap;
   background: rgba(255, 255, 255, 0.1);
   padding: 1vh;
-  font-size: 2vw;
+  font-size: 1.8vh;
   border-radius: 10px;
   margin-top: 2vh;
 }
 
 .ticker-content {
   display: inline-block;
-  animation: scroll 60s linear infinite;
+  animation: scroll 40s linear infinite;
 }
 
 .ticker-content span {
@@ -123,9 +136,26 @@ li {
   }
 }
 
+/* Responsive layout */
 @media (max-width: 768px) {
   .widget {
     flex-basis: 100%;
     min-width: 100%;
+  }
+
+  #clock {
+    font-size: 8vw;
+  }
+
+  #date {
+    font-size: 3vw;
+  }
+
+  #weather {
+    font-size: 3vw;
+  }
+
+  .news-ticker {
+    font-size: 1.6vh;
   }
 }
