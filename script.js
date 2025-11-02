@@ -1,13 +1,12 @@
-// =================== CLOCK ===================
+// =================== 🕒 CLOCK DISPLAY ===================
 function updateClock() {
   const now = new Date();
   document.getElementById("clock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  document.getElementById("date").textContent = now.toDateString(); // Update the date below the clock
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// =================== WEATHER ===================
+// =================== 🌤️ WEATHER DISPLAY ===================
 const apiKey = "464ada6dae3151b0fb9bbf18cba7bec4";
 const lat = 59.3293;
 const lon = 18.0686;
@@ -24,11 +23,13 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&uni
     document.getElementById("weather").textContent = "Weather unavailable";
   });
 
-// =================== GROCERY LIST ===================
+// =================== 🛒 GROCERY LIST ===================
 let items = JSON.parse(localStorage.getItem("groceryList")) || [];
+
 function saveItems() {
   localStorage.setItem("groceryList", JSON.stringify(items));
 }
+
 function renderItems() {
   const list = document.getElementById("items");
   list.innerHTML = "";
@@ -46,6 +47,7 @@ function renderItems() {
     list.appendChild(li);
   });
 }
+
 function addItem() {
   const input = document.getElementById("item-input");
   if (input.value.trim()) {
@@ -57,11 +59,13 @@ function addItem() {
 }
 renderItems();
 
-// =================== TO-DO LIST ===================
+// =================== ✅ TO-DO LIST ===================
 let todos = JSON.parse(localStorage.getItem("todoList")) || [];
+
 function saveTodos() {
   localStorage.setItem("todoList", JSON.stringify(todos));
 }
+
 function renderTodos() {
   const list = document.getElementById("todo-list");
   list.innerHTML = "";
@@ -79,6 +83,7 @@ function renderTodos() {
     list.appendChild(li);
   });
 }
+
 function addTask() {
   const input = document.getElementById("todo-input");
   if (input.value.trim()) {
@@ -90,7 +95,7 @@ function addTask() {
 }
 renderTodos();
 
-// =================== BACKGROUND THEME ===================
+// =================== 🎨 DYNAMIC BACKGROUND ===================
 function updateBackground() {
   const hour = new Date().getHours();
   let bg = '#1a1a2e';
@@ -113,7 +118,7 @@ function updateBackground() {
 updateBackground();
 setInterval(updateBackground, 60 * 60 * 1000); // every hour
 
-// =================== NEWS TICKER ===================
+// =================== 📰 NEWS TICKER ===================
 async function fetchHeadlines() {
   const proxy = "https://api.allorigins.win/get?url=";
   const bbc = encodeURIComponent("https://feeds.bbci.co.uk/news/world/rss.xml");
@@ -141,4 +146,9 @@ async function fetchHeadlines() {
 }
 
 fetchHeadlines();
-setInterval(fetchHeadlines, 30 * 60 * 1000); // every 30 mins
+setInterval(fetchHeadlines, 30 * 60 * 1000); // every 30 minutes
+
+// =================== 🔁 AUTO-REFRESH PAGE ===================
+setTimeout(() => {
+  location.reload();
+}, 60 * 60 * 1000); // every 1 hour
