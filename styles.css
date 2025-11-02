@@ -99,7 +99,7 @@ li {
 
 .ticker-content {
   display: inline-block;
-  animation: scroll 50s linear infinite;
+  animation: scroll 60s linear infinite;
 }
 
 .ticker-content span {
