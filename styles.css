@@ -13,7 +13,7 @@ body {
   gap: 3vh;
 }
 
-/* Layout Grid */
+/* ========== Layout ========== */
 .dashboard {
   display: grid;
   gap: 2vh;
@@ -26,7 +26,13 @@ body {
   justify-content: space-between;
 }
 
-/* Widget styling */
+/* Custom row: 3 boxes each 25% */
+.row-3-25 .widget {
+  width: 25%;
+  min-width: 25%;
+}
+
+/* ========== Widget Styling ========== */
 .widget {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
@@ -37,7 +43,7 @@ body {
   transition: background 0.3s;
 }
 
-/* Clock & Weather */
+/* ========== Clock & Weather ========== */
 #clock {
   font-size: 5vw;
   font-weight: 600;
@@ -58,13 +64,13 @@ body {
   width: 60px;
 }
 
-/* Grocery + To-Do Inputs */
+/* ========== Input Fields ========== */
 input[type="text"] {
   width: 100%;
   padding: 0.6vh 1vw;
   border: none;
   border-radius: 8px;
-  font-size: 1.6vh;
+  font-size: 1.5vh;
   margin-bottom: 1vh;
   background: rgba(255, 255, 255, 0.08);
   color: var(--text-color);
@@ -79,15 +85,18 @@ button {
   color: var(--text-color);
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 1.4vh;
 }
 
 button:hover {
   background: rgba(255, 0, 0, 0.3);
 }
 
-/* Grocery List */
+/* ========== Grocery & To-Do Lists ========== */
 #grocery, #todo {
-  font-size: 1.7vh;
+  font-size: 1.6vh;
+  font-weight: 500;
+  margin-bottom: 1vh;
 }
 
 #items li, #todo-list li {
@@ -95,19 +104,20 @@ button:hover {
   padding: 0.5vh 1vw;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  font-size: 1.6vh;
+  font-size: 1.4vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: background 0.3s ease;
+  color: var(--text-color);
 }
 
 #todo-list input[type="checkbox"] {
   margin-right: 1vw;
-  transform: scale(1.1);
+  transform: scale(1);
 }
 
-/* News Ticker */
+/* ========== News Ticker ========== */
 .news-ticker {
   overflow: hidden;
   white-space: nowrap;
@@ -127,6 +137,7 @@ button:hover {
   margin-right: 4vw;
 }
 
+/* Smooth scrolling animation */
 @keyframes scroll {
   0% {
     transform: translateX(100%);
@@ -136,7 +147,7 @@ button:hover {
   }
 }
 
-/* Responsive layout */
+/* ========== Responsive Layout ========== */
 @media (max-width: 768px) {
   .widget {
     flex-basis: 100%;
