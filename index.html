@@ -7,50 +7,56 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="row">
-    <div class="widget weather" id="weather">Loading weather...</div>
+
+  <!-- 🕒 CLOCK AND WEATHER SECTION -->
+  <div class="row row-top">
     <div class="widget clock">
       <div id="clock"></div>
-      <div class="date" id="date"></div>
+    </div>
+    <div class="widget weather">
+      <div id="weather"></div>
+      <div id="date"></div>
     </div>
   </div>
 
-
-  <div class="news-ticker">
-    <div id="newsTicker" class="ticker-content"></div>
-  </div>
-
-
-  
+  <!-- 🛒 GROCERY LIST SECTION -->
   <div class="row">
-    <div class="widget full-width">
-      <h2>Grocery List</h2>
-      <input type="text" id="item-input" placeholder="Add item..." />
+    <div class="widget">
+      <h3>Grocery List</h3>
+      <input type="text" id="item-input" placeholder="Add item">
       <button onclick="addItem()">Add</button>
       <ul id="items"></ul>
     </div>
   </div>
 
+  <!-- ✅ TO-DO LIST SECTION -->
   <div class="row">
-    <div class="widget full-width">
-      <h2>To-Do List</h2>
-      <input type="text" id="todo-input" placeholder="Add task..." />
+    <div class="widget">
+      <h3>To-Do List</h3>
+      <input type="text" id="todo-input" placeholder="New task">
       <button onclick="addTask()">Add</button>
       <ul id="todo-list"></ul>
     </div>
   </div>
 
-  <div class="row">
+  <!-- 🔲 MID-ROW EMPTY PLACEHOLDER WIDGETS -->
+  <div class="row row-mid">
     <div class="widget"></div>
     <div class="widget"></div>
     <div class="widget"></div>
     <div class="widget"></div>
   </div>
 
-  <div class="row thin-row">
-    <div class="widget"></div>
-    <div class="widget"></div>
-    <div class="widget"></div>
+  <!-- 🔳 SLIM BOTTOM ROW WIDGETS -->
+  <div class="row row-bottom">
+    <div class="widget small"></div>
+    <div class="widget small"></div>
+    <div class="widget small"></div>
+  </div>
+
+  <!-- 📰 NEWS TICKER SECTION -->
+  <div class="news-ticker">
+    <div class="ticker-content" id="newsTicker"></div>
   </div>
 
   <script src="script.js"></script>
