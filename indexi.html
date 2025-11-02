@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Row 1: Clock (60%) + Weather (40%) -->
+  <div class="row row-1">
+    <div class="widget clock" style="flex: 0 0 60%;">Clock</div>
+    <div class="widget weather" style="flex: 0 0 40%;">Weather</div>
+  </div>
+
+  <!-- Row 2: Grocery List (100%) -->
+  <div class="row row-2">
+    <div class="widget grocery" style="flex: 0 0 100%;">Grocery List</div>
+  </div>
+
+  <!-- Row 3: To-Do List (100%) -->
+  <div class="row row-3">
+    <div class="widget todo" style="flex: 0 0 100%;">To-Do List</div>
+  </div>
+
+  <!-- Row 4: Four Equal Widgets (4 × 25%) -->
+  <div class="row row-4">
+    <div class="widget" style="flex: 0 0 25%;">Widget 1</div>
+    <div class="widget" style="flex: 0 0 25%;">Widget 2</div>
+    <div class="widget" style="flex: 0 0 25%;">Widget 3</div>
+    <div class="widget" style="flex: 0 0 25%;">Widget 4</div>
+  </div>
+
+  <!-- Row 5: Thin 3-Column Row -->
+  <div class="row row-5">
+    <div class="widget" style="flex: 0 0 33%;">Thin 1</div>
+    <div class="widget" style="flex: 0 0 33%;">Thin 2</div>
+    <div class="widget" style="flex: 0 0 33%;">Thin 3</div>
+  </div>
+
+  <!-- Row 6: News Ticker (100%) -->
+  <div class="row row-6">
+    <div class="widget news-ticker" style="flex: 0 0 100%;">
+      <div class="ticker-content" id="newsTicker">Loading news...</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
